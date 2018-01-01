@@ -3,7 +3,9 @@ package com.example.administrator.todo;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,12 +39,12 @@ public class AddTaskActivity extends AppCompatActivity{
     }
 
     private void setClicked() {
-        EditText editTitle = (EditText)findViewById(R.id.edit_title);
+        final EditText editTitle = (EditText)findViewById(R.id.edit_title);
         final TextView textDDL = (TextView)findViewById(R.id.text_ddl);
         TextView textSetDDL = (TextView)findViewById(R.id.text_set_ddl);
         final TextView textRemindTime = (TextView)findViewById(R.id.text_remind_time);
         final Switch switch_remind = (Switch)findViewById(R.id.switch_remind);
-        EditText editDetails = (EditText)findViewById(R.id.edit_details);
+        final EditText editDetails = (EditText)findViewById(R.id.edit_details);
         TextView textCancel = (TextView)findViewById(R.id.text_cancel);
         TextView textConfirm = (TextView)findViewById(R.id.text_confirm);
 
@@ -66,7 +71,9 @@ public class AddTaskActivity extends AppCompatActivity{
                                 int mYear = picker.getYear();
                                 int mMonth = picker.getMonth();
                                 int mDay = picker.getDayOfMonth();
-                                ddl = new Date(mYear, mMonth, mDay);
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth(), 0, 0, 0);
+                                ddl = calendar.getTime();
                                 String ss = "";
                                 ss += String.valueOf(mYear) + "-";
                                 if (mMonth < 9) ss += "0";
@@ -171,6 +178,23 @@ public class AddTaskActivity extends AppCompatActivity{
         textConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editTitle.getText().equals("")) {
+                    Toast.makeText(getApplicationContext(), "任务栏不能为空",
+                            Toast.LENGTH_SHORT).show();
+                } else if (ddl == null) {
+                    Toast.makeText(getApplicationContext(), "需要设定到期时间",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    EventBus.getDefault().post(new MessageEvent(
+                            editTitle.getText().toString(),
+                            editDetails.getText().toString(),
+                            ddl, remind_time));
+                    Toast.makeText(getApplicationContext(), "添加成功",
+                            Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddTaskActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
             }
         });
@@ -179,7 +203,23 @@ public class AddTaskActivity extends AppCompatActivity{
         textCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 取消时弹出对话框提示
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddTaskActivity.this);
+                alertDialog.setTitle("取消编辑")
+                        .setMessage("是否要放弃此次编辑？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            //  放弃更改，返回
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .show();
             }
         });
     }
