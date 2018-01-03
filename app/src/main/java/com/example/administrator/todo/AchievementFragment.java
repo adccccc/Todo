@@ -11,6 +11,8 @@ import android.view.ViewGroup;
  * Created by Administrator on 2018/1/1.
  */
 
+// 成就Fragment的事件处理类
+
 public class AchievementFragment extends Fragment {
     View view;
 

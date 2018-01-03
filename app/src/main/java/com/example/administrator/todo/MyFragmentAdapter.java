@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2018/1/1.
  */
+// ViewPager的FragmentAdapter
+// 原理类似ListView的Adapter
 
 public class MyFragmentAdapter extends FragmentPagerAdapter {
     Context context;

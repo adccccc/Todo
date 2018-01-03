@@ -26,6 +26,8 @@ import java.util.Date;
 /**
  * Created by Administrator on 2018/1/1.
  */
+// task添加页事件处理类
+//  点击FAB后跳转到此Activity
 
 public class AddTaskActivity extends AppCompatActivity{
     private String title, details;
@@ -38,6 +40,7 @@ public class AddTaskActivity extends AppCompatActivity{
         setClicked();
     }
 
+    // 设置控件监听器
     private void setClicked() {
         final EditText editTitle = (EditText)findViewById(R.id.edit_title);
         final TextView textDDL = (TextView)findViewById(R.id.text_ddl);
@@ -72,12 +75,15 @@ public class AddTaskActivity extends AppCompatActivity{
                                 int mMonth = picker.getMonth();
                                 int mDay = picker.getDayOfMonth();
                                 Calendar calendar = Calendar.getInstance();
+                                // deadline是精确到天的；所以分，秒，毫秒都是0
                                 calendar.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth(), 0, 0, 0);
                                 ddl = calendar.getTime();
                                 String ss = "";
                                 ss += String.valueOf(mYear) + "-";
+                                // month是从0-11计算的，故值为9的时候实际表示10月，小于9则补零
                                 if (mMonth < 9) ss += "0";
                                 ss += String.valueOf(mMonth + 1) + "-";
+                                // day小于10补0
                                 if (mDay < 10) ss += "0";
                                 ss += String.valueOf(mDay);
                                 textDDL.setText(ss);
@@ -122,6 +128,9 @@ public class AddTaskActivity extends AppCompatActivity{
                                     mCalendar.set(Calendar.MONTH, picker.getMonth());
                                     mCalendar.set(Calendar.DAY_OF_MONTH, picker.getDayOfMonth());
 
+                                    //  !!!此处BUG： 此函数被系统屏蔽，选择时间后无法回调
+                                    //  故当前版本无法选择时钟时间
+                                    //  未找到解决方法  待解决
                                     final TimePickerDialog timeDialog = new TimePickerDialog(AddTaskActivity.this,
                                             new TimePickerDialog.OnTimeSetListener() {
                                                 @Override
@@ -178,13 +187,14 @@ public class AddTaskActivity extends AppCompatActivity{
         textConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTitle.getText().equals("")) {
+                if (editTitle.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "任务栏不能为空",
                             Toast.LENGTH_SHORT).show();
                 } else if (ddl == null) {
                     Toast.makeText(getApplicationContext(), "需要设定到期时间",
                             Toast.LENGTH_SHORT).show();
                 } else {
+                    // EventBus传递信息到TaskFragment
                     EventBus.getDefault().post(new MessageEvent(
                             editTitle.getText().toString(),
                             editDetails.getText().toString(),

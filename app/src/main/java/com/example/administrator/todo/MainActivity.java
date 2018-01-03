@@ -4,20 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
     private BottomNavigationView navigation;
     private List<Fragment> listFragment;
+
+    // 底部导航栏监听器
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager = (NoScrollViewPager) findViewById(R.id.view_pager);
 
         listFragment = new ArrayList<>();
         listFragment.add(new TaskFragment());       //添加Fragment进ViewPager的数据源
@@ -59,13 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         MyFragmentAdapter adapter = new MyFragmentAdapter(getSupportFragmentManager(), this, listFragment);
         viewPager.setAdapter(adapter);
-
-    }
-
-
-    // 处理由EventBus传递回来的信息
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
 
     }
 }

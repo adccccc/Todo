@@ -42,12 +42,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layout_day1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
@@ -76,11 +78,14 @@
                 </android.support.constraint.ConstraintLayout>
                 <ListView
                     android:id="@+id/list_today"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ListView>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutAnimation="@anim/anim_list_item"
+                    android:visibility="gone"></ListView>
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/layout_day3"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -107,11 +112,14 @@
                 </android.support.constraint.ConstraintLayout>
                 <ListView
                     android:id="@+id/list_threedays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ListView>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutAnimation="@anim/anim_list_item"
+                    android:visibility="gone"></ListView>
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/layout_day7"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -138,11 +146,14 @@
                 </android.support.constraint.ConstraintLayout>
                 <ListView
                     android:id="@+id/list_weeks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ListView>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutAnimation="@anim/anim_list_item"
+                    android:visibility="gone"></ListView>
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/layout_dayothers"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,8 +180,10 @@
                 </android.support.constraint.ConstraintLayout>
                 <ListView
                     android:id="@+id/list_others"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ListView>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutAnimation="@anim/anim_list_item"
+                    android:visibility="gone"></ListView>
             </LinearLayout>
 
         </ScrollView>

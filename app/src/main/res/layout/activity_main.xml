@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.administrator.todo.MainActivity">
-    <android.support.v4.view.ViewPager
+    <com.example.administrator.todo.NoScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-    </android.support.v4.view.ViewPager>
+    </com.example.administrator.todo.NoScrollViewPager>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
